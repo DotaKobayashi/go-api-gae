@@ -1,0 +1,30 @@
+name: CRON
+on:
+  schedule:
+  # UTC
+#  - cron: '0 2 * * *'
+
+jobs:
+  hi:
+    name: Hi
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v1
+      # デフォルトブランチ以外を実行したい場合はブランチを指定する
+#      with:
+#        ref: other
+    - name: Echo
+      run: echo "I've checked out"
+    - name: Slack Notification
+      # 前Stepの実行結果を判定
+      # success() or failure() or always()
+      if: always()
+      uses: rtCamp/action-slack-notify@master
+      env:
+        SLACK_CHANNEL: channel_name
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Post Content :rocket:'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
